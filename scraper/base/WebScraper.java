@@ -4,6 +4,7 @@
 // NAME: Michelle Julsen & Augusto F. Zorrilla Mendez
 // RESOURCES: Lab slides, book, TA, lab partners and previous assignments.
 package scraper.base;
+import scraper.utils.*;
 
 public class WebScraper 
 {
@@ -11,7 +12,7 @@ public class WebScraper
 	//VARIABLES
 	private String url;
 	private int depth;
-	private String pageHistory;
+	private PageHistory pageHistory;
 	
 	//CONSTRUCTOR
 	
@@ -51,7 +52,7 @@ public class WebScraper
 		
 		if (url != null && !url.isEmpty())
 		{
-			url = urlIn;
+			this.url = url;
 		}
 	}
 	
@@ -62,10 +63,23 @@ public class WebScraper
 	
 	public scraper.utils.ResultSet getImages()
 	{
-		return
+		ResultSet myResult = new ResultSet();
+		Document page = new Document();
+		page.loadPageFromURL(url);
+		Elements img = page.getElementsByTag("img");
+		
+		while (img.hasNextElement())
+		{
+
+			ImageEntry myEntry = new ImageEntry(url, img.getNextElement().getAttributeValue("src"));
+			myResult.addResult(myEntry);
+			 
+		}
+
+		return myResult;
+		
 	}
-	
-	public scraper.utils.ResultSet crawlPAge()
+	public scraper.utils.ResultSet crawlPage()
 	{
 		
 	}
